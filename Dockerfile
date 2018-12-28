@@ -15,7 +15,7 @@ RUN (curl -L https://github.com/openshift/origin/releases/download/v3.11.0/opens
 RUN cd /usr/local/bin && mv linux-amd64/* .  && mv openshift-origin-client-tools-v3.11.0-0cbc58b-linux-64bit/* . && rm -rf linux-amd64 openshift-origin-client-tools-v3.11.0-0cbc58b-linux-64bit/ && cd -
 # oh my zsh
 
-ENV TZ=Europe/Zurich TERM=xterm ZSH_THEME=agnoster
+ENV TZ=Europe/Zurich TERM=xterm ZSH_THEME=agnoster GOTTY_PORT=8080 GOTTY_USER=dummyuser GOTTY_PASS=dummypass
 
 RUN sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 
@@ -25,4 +25,5 @@ USER 1001
 EXPOSE 8080
 # Set the default CMD to print the usage of the language image
 
-CMD ["gotty","--title-format","tkggo-test","--permit-write","--port","8080","zsh"]
+#CMD ["gotty","--title-format","tkggo-test","--permit-write","--port","${GOTTY_PORT}","--once","--credential","guo:12345678","zsh"]
+CMD ["sh","-c","gotty --permit-write --port ${GOTTY_PORT} --once --credential ${GOTTY_USER}:${GOTTY_PASS} zsh"]
