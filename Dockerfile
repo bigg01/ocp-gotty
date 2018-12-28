@@ -29,4 +29,5 @@ EXPOSE 8080
 # Set the default CMD to print the usage of the language image
 
 #CMD ["gotty","--title-format","tkggo-test","--permit-write","--port","${GOTTY_PORT}","--once","--credential","guo:12345678","zsh"]
-CMD ["sh","-c","gotty --permit-write --port ${GOTTY_PORT} --once --credential ${GOTTY_USER}:${GOTTY_PASS} zsh"]
+CMD ["sh","-c","gotty --title-format \"GoTTY - {{ .Command }} ({{ .Hostname }})\" --permit-write --port ${GOTTY_PORT} --once --credential ${GOTTY_USER}:${GOTTY_PASS} zsh"]
+
