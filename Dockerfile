@@ -2,23 +2,41 @@ FROM openshift/base-centos7
 
 # Install gotty
 RUN yum install zsh -y && yum clean all
-
-RUN  (curl -L https://github.com/yudai/gotty/releases/download/v1.0.1/gotty_linux_amd64.tar.gz | \
+ENV GOTTY_VERSION=v1.0.1
+RUN  (curl -L https://github.com/yudai/gotty/releases/download/${GOTTY_VERSION}/gotty_linux_amd64.tar.gz | \
         tar -xz -C /usr/local/bin/)
+# install jq
+ENV JQ_VERSION=1.6
+RUN curl -L "https://github.com/stedolan/jq/releases/download/jq-${JQ_VERSION}/jq-linux64" -o /usr/local/bin/jq && chmod +x /usr/local/bin/jq
+# install yq
+ENV YQ_VERSION=2.2.0
+RUN curl -L "https://github.com/mikefarah/yq/releases/download/${YQ_VERSION}/yq_linux_amd64" -o /usr/local/bin/yq && chmod +x /usr/local/bin/yq
 # Install helm
-RUN (curl -L https://storage.googleapis.com/kubernetes-helm/helm-v2.12.1-linux-amd64.tar.gz | \
+ENV HELM_VERSION=v2.12.1
+RUN (curl -L "https://storage.googleapis.com/kubernetes-helm/helm-${HELM_VERSION}-linux-amd64.tar.gz" | \
         tar -xz -C /usr/local/bin/)
-
 # install odo
-RUN curl -L https://github.com/redhat-developer/odo/releases/download/v0.0.17/odo-linux-amd64 -o /usr/local/bin/odo && chmod +x /usr/local/bin/odo
-
+ENV ODO_VERSION=v0.0.17
+RUN curl -L "https://github.com/redhat-developer/odo/releases/download/${ODO_VERSION}/odo-linux-amd64" -o /usr/local/bin/odo && chmod +x /usr/local/bin/odo
+# install kompose
+ENV KOMPOSE_VERSION=v1.16.0
+RUN curl -L "https://github.com/kubernetes/kompose/releases/download/${KOMPOSE_VERSION}/kompose-linux-amd64" -o /usr/local/bin/kompose && chmod +x /usr/local/bin/kompose
 # Install oc-client
-RUN (curl -L https://github.com/openshift/origin/releases/download/v3.11.0/openshift-origin-client-tools-v3.11.0-0cbc58b-linux-64bit.tar.gz | \
-        tar -xz -C /usr/local/bin/)
-RUN cd /usr/local/bin && mv linux-amd64/* .  && mv openshift-origin-client-tools-v3.11.0-0cbc58b-linux-64bit/* . && rm -rf linux-amd64 openshift-origin-client-tools-v3.11.0-0cbc58b-linux-64bit/ && cd -
-# oh my zsh
+ENV OCP_VERSION=v3.11.0 \
+    OCP_CLIENT_HASH=0cbc58b
+# Install oc-client
+RUN (curl -L https://github.com/openshift/origin/releases/download/${OCP_VERSION}/openshift-origin-client-tools-${OCP_VERSION}-${OCP_CLIENT_HASH}-linux-64bit.tar.gz | \
+       tar -xz -C /usr/local/bin/) && cd /usr/local/bin && mv linux-amd64/* .  && mv openshift-origin-client-tools-${OCP_VERSION}-${OCP_CLIENT_HASH}-linux-64bit/* . && \
+       rm -rf linux-amd64 openshift-origin-client-tools-${OCP_VERSION}-${OCP_CLIENT_HASH}-linux-64bit/ && cd -
 
-ENV TZ=Europe/Zurich TERM=xterm ZSH_THEME=agnoster GOTTY_PORT=8080 GOTTY_USER=dummyuser GOTTY_PASS=dummypass
+
+# oh my zsh
+ENV TZ=Europe/Zurich \
+    TERM=xterm \
+    ZSH_THEME=agnoster \
+    GOTTY_PORT=8080  \
+    GOTTY_USER=dummyuser \
+    GOTTY_PASS=dummypass
 
 RUN sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 
