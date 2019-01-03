@@ -1,11 +1,15 @@
-# ocp-gotty
+# docker build ocp-gotty
 ```sh
 docker build -t test_gotty .
 docker run -p 8080:8080 test_gotty
 ```
-
+# buildah / podman
+```sh
+sudo systemctl stop docker
+podman build -t gotty_test .
+buildah build-using-dockerfile -t test_builda_gotty .
+```
 ## openshift
-
 ```sh
 oc new-project gotty
 
