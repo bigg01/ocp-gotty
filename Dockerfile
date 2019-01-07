@@ -37,7 +37,8 @@ ENV TZ=Europe/Zurich \
     GOTTY_PORT=8080  \
     GOTTY_USER=dummyuser \
     GOTTY_PASS=dummypass \
-    GOTTY_CONFIG_FILE=/tmp/windows.config
+    GOTTY_CONFIG_FILE=/tmp/windows.config \
+    $GOTTY_TERM=xterm
 
 RUN sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 
