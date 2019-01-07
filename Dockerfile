@@ -37,15 +37,17 @@ ENV TZ=Europe/Zurich \
     GOTTY_PORT=8080  \
     GOTTY_USER=dummyuser \
     GOTTY_PASS=dummypass
+    GOTTY_CONFIG_FILE=/tmp/windows.config
 
 RUN sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 
-RUN echo "source <(oc completion zsh)" >> ~/.zshrc && chown -R 1001:root /opt/app-root/src && fix-permissions /opt/app-root/src/
+#RUN echo "source <(oc completion zsh)" >> ~/.zshrc && chown -R 1001:root /opt/app-root/src && fix-permissions /opt/app-root/src/
+RUN echo "source <(oc completion zsh)" >> ~/.zshrc && chown -R 1001:root /opt/app-root/src
 
 USER 1001
 EXPOSE 8080
 # Set the default CMD to print the usage of the language image
 
 #CMD ["gotty","--title-format","tkggo-test","--permit-write","--port","${GOTTY_PORT}","--once","--credential","guo:12345678","zsh"]
-CMD ["sh","-c","gotty --title-format \"GoTTY - {{ .Command }} ({{ .Hostname }})\" --permit-write --port ${GOTTY_PORT} --once --credential ${GOTTY_USER}:${GOTTY_PASS} zsh"]
-
+#CMD ["sh","-c","gotty --title-format \"GoTTY - {{ .Command }} ({{ .Hostname }})\" --permit-write --port ${GOTTY_PORT} --once --credential ${GOTTY_USER}:${GOTTY_PASS} zsh"]
+CMD ["sh","-c","gotty --config ${GOTTY_CONFIG_FILE}  --permit-write --port ${GOTTY_PORT} --credential ${GOTTY_USER}:${GOTTY_PASS} zsh"]
