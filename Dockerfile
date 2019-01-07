@@ -1,7 +1,7 @@
 FROM openshift/base-centos7
 
 # Install gotty
-RUN yum install zsh -y && yum clean all
+RUN yum install zsh -y && yum clean all && mkdir -p /opt/app-root/src/.kube
 ENV GOTTY_VERSION=v1.0.1
 RUN  (curl -L https://github.com/yudai/gotty/releases/download/${GOTTY_VERSION}/gotty_linux_amd64.tar.gz | \
         tar -xz -C /usr/local/bin/)
