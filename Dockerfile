@@ -36,7 +36,7 @@ ENV TZ=Europe/Zurich \
     ZSH_THEME=agnoster \
     GOTTY_PORT=8080  \
     GOTTY_USER=dummyuser \
-    GOTTY_PASS=dummypass
+    GOTTY_PASS=dummypass \
     GOTTY_CONFIG_FILE=/tmp/windows.config
 
 RUN sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
