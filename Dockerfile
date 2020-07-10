@@ -13,7 +13,7 @@ ENV YQ_VERSION=2.2.0
 RUN curl -L "https://github.com/mikefarah/yq/releases/download/${YQ_VERSION}/yq_linux_amd64" -o /usr/local/bin/yq && chmod +x /usr/local/bin/yq
 # Install helm
 RUN (curl -L "https://get.helm.sh/helm-v3.2.4-linux-amd64.tar.gz" | \
-        tar -xz -C /usr/local/bin/)
+        tar -xz -C /usr/local/bin/) && mv /usr/local/bin/linux-amd64/helm /usr/local/bin/
 # install odo
 #ENV ODO_VERSION=v0.0.17
 #RUN curl -L "https://github.com/redhat-developer/odo/releases/download/${ODO_VERSION}/odo-linux-amd64" -o /usr/local/bin/odo && chmod +x /usr/local/bin/odo
@@ -21,8 +21,7 @@ RUN (curl -L "https://get.helm.sh/helm-v3.2.4-linux-amd64.tar.gz" | \
 #ENV KOMPOSE_VERSION=v1.16.0
 #RUN curl -L "https://github.com/kubernetes/kompose/releases/download/${KOMPOSE_VERSION}/kompose-linux-amd64" -o /usr/local/bin/kompose && chmod +x /usr/local/bin/kompose
 # Install oc-client
-ENV OCP_VERSION=v3.11.0 \
-    OCP_CLIENT_HASH=0cbc58b
+#
 # Install oc-client
 RUN (curl -L https://mirror.openshift.com/pub/openshift-v4/clients/oc/latest/linux/oc.tar.gz | \
        tar -xz -C /usr/local/bin/)
@@ -52,6 +51,7 @@ EXPOSE 8080
 
 # without tmux
 #CMD ["sh","-c","gotty --config ${GOTTY_CONFIG_FILE}  --permit-write --port ${GOTTY_PORT} --credential ${GOTTY_USER}:${GOTTY_PASS} zsh"]
-CMD ["sh","-c","gotty --permit-write --port ${GOTTY_PORT} --credential ${GOTTY_USER}:${GOTTY_PASS} zsh"]
+#CMD ["sh","-c","gotty --permit-write --port ${GOTTY_PORT} --credential ${GOTTY_USER}:${GOTTY_PASS} bash"]
+CMD ["sh","-c","gotty tmux new -A -s gotty --permit-write --port ${GOTTY_PORT} --credential ${GOTTY_USER}:${GOTTY_PASS} bash"]
 # tmux
 #CMD ["sh","-c","gotty tmux new -A -s --config ${GOTTY_CONFIG_FILE}  --permit-write --port ${GOTTY_PORT} --credential ${GOTTY_USER}:${GOTTY_PASS} zsh"]
