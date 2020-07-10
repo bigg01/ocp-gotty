@@ -52,6 +52,7 @@ EXPOSE 8080
 # without tmux
 #CMD ["sh","-c","gotty --config ${GOTTY_CONFIG_FILE}  --permit-write --port ${GOTTY_PORT} --credential ${GOTTY_USER}:${GOTTY_PASS} zsh"]
 #CMD ["sh","-c","gotty --permit-write --port ${GOTTY_PORT} --credential ${GOTTY_USER}:${GOTTY_PASS} bash"]
-CMD ["sh","-c","gotty tmux new -A -s gotty --permit-write --port ${GOTTY_PORT} --credential ${GOTTY_USER}:${GOTTY_PASS} bash"]
+CMD ["sh","-c","gotty --permit-write --port ${GOTTY_PORT} tmux new -A -s gotty"]
+# gotty tmux new -A -s gotty bash
 # tmux
 #CMD ["sh","-c","gotty tmux new -A -s --config ${GOTTY_CONFIG_FILE}  --permit-write --port ${GOTTY_PORT} --credential ${GOTTY_USER}:${GOTTY_PASS} zsh"]
